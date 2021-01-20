@@ -1,18 +1,30 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <p>Records: {{ recordsText }}</p>
+    <p><button @click="clearRecords">清除快取</button></p>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 
 export default defineComponent({
   name: 'Home',
-  components: {
-    HelloWorld,
+  computed: {
+    records(): Array<string> {
+      return this.$store.state.records;
+    },
+    recordsText(): string {
+      return JSON.stringify(this.records);
+    },
+  },
+  created() {
+    this.$store.dispatch('getRecords');
+  },
+  methods: {
+    clearRecords() {
+      this.$store.dispatch('clearRecords');
+    },
   },
 });
 </script>
